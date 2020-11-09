@@ -10,4 +10,4 @@ Virtualenv, requirements.txt
 
 Download Python_Project or clon git
 
-Activate virtualenv 
+Activate virtualenv venv/Scripts/Activate
