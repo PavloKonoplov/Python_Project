@@ -24,7 +24,8 @@ class User(Base):
     username = Column(String(64))
     password = Column(String(16))
     email = Column(String(64))
-    ev = relationship("Event", secondary=lambda: user_events_table)
+    attended_events = relationship("Event", secondary=lambda: user_events_table, back_populates="attendees")
+    created_events = relationship("Event", order_by=lambda: Event.id, back_populates="author")
 
     def __init__(self, username, password, email):
         self.username = username
@@ -38,15 +39,15 @@ class Event(Base):
     name = Column('name', String(64))
     date = Column('date', DateTime())
     description = Column(String(512))
-    author = Column('author_id', Integer, ForeignKey("User.id"))
+    author_id = Column(Integer, ForeignKey('User.id'))
+    author = relationship('User', back_populates="created_events")
+    attendees = relationship('User', secondary=lambda: user_events_table, back_populates='attended_events')
 
-    def __init__(self, name, date, description):
+    def __init__(self, name, date, description, author):
         self.name = name
         self.date = date
         self.description = description
-
-
-events = association_proxy('ev', 'event')
+        self.author = author
 
 user_events_table = Table('User_Events', Base.metadata,
                           Column('user_id', Integer, ForeignKey("User.id"),
@@ -54,3 +55,5 @@ user_events_table = Table('User_Events', Base.metadata,
                           Column('event_id', Integer, ForeignKey("Event.id"),
                                  primary_key=True)
                           )
+
+Base.metadata.create_all(engine)
