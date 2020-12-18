@@ -3,13 +3,16 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import relationship
 
+
 SERVER = 'DESKTOP-59P7NBL'
 DATABASE = 'Pavlo_Python'
 DRIVER = 'SQL Server Native Client 11.0'
 USERNAME = 'Pavlo'
 PASSWORD = '123456'
 
+
 DATABASE_CONNECTION = f'mssql://{USERNAME}:{PASSWORD}@{SERVER}/{DATABASE}?driver={DRIVER}'
+
 
 engine = create_engine(DATABASE_CONNECTION)
 
@@ -22,7 +25,7 @@ class User(Base):
     __tablename__ = 'User'
     id = Column(Integer, primary_key=True)
     username = Column(String(64))
-    password = Column(String(16))
+    password = Column(String(64))
     email = Column(String(64))
     attended_events = relationship("Event", secondary=lambda: user_events_table, back_populates="attendees")
     created_events = relationship("Event", order_by=lambda: Event.id, back_populates="author")
@@ -56,4 +59,4 @@ user_events_table = Table('User_Events', Base.metadata,
                                  primary_key=True)
                           )
 
-Base.metadata.create_all(engine)
+#Base.metadata.create_all(engine)
