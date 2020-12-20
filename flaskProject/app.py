@@ -106,6 +106,7 @@ def make_events():
             result = EventData().dump(event)
             return result
 
+
 @app.route('/events/<id>', methods=['GET', 'DELETE'])
 def get_event_by_id(id):
     if request.method == 'GET':
@@ -138,13 +139,3 @@ if __name__ == '__main__':
 
 server = make_server('', 5000, app)
 server.serve_forever()
-
-
-#curl -XPOST http://127.0.0.1:5000/user -H "Content-Type:application/json" --data "{\"username\":\"John\", \"password\":\"8462927\", \"email\":\"johnd@email.com\"}"
-#curl -XPUT http://127.0.0.1:5000/user -H "Content-Type:application/json" --data "{\"id\":\"1\", \"username\":\"John\", \"password\":\"202fjduy\", \"email\":\"johnd22@email.com\"}"
-#curl -XGET http://127.0.0.1:5000/user/John
-
-#curl -XPOST http://127.0.0.1:5000/events -H "Content-Type:application/json" --data "{\"name\":\"Movie night\", \"date\":\"2020-12-20\", \"description\":\"Popcorn\", \"author\":\"2\"}"
-#curl -XPUT http://127.0.0.1:5000/events -H "Content-Type:application/json" --data "{\"id\":\"2\", \"name\":\"Movie night\", \"date\":\"2020-12-21\", \"description\":\"Popcorn(remember)\"}"
-#curl -XGET http://127.0.0.1:5000/events
-#curl -XGET http://127.0.0.1:5000/events/connectedEvents/2
