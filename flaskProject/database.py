@@ -52,6 +52,7 @@ class Event(Base):
         self.description = description
         self.author = author
 
+
 user_events_table = Table('User_Events', Base.metadata,
                           Column('user_id', Integer, ForeignKey("User.id"),
                                  primary_key=True),
