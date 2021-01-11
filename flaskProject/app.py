@@ -2,7 +2,6 @@
 
 from wsgiref.simple_server import make_server
 
-
 from flask import Blueprint, request, Flask, jsonify
 from flask import abort
 from flask_bcrypt import Bcrypt
@@ -29,8 +28,8 @@ def hello_world():
 
 @app.route('/login', methods=['POST'])
 def login():
-    if not request.is_json:
-        return jsonify({"msg": "Missing JSON in request"}), 400
+    #if not request.is_json:
+    #    return jsonify({"msg": "Missing JSON in request"}), 400
 
     username = request.json.get('username', None)
     password = request.json.get('password', None)
@@ -57,14 +56,10 @@ def login():
 def register_user():
     data = request.json
     if request.method == 'POST':
-        try:
-            user_data = {'username': data['username'],
-                         'password': bcrypt.generate_password_hash(data['password']).decode('utf-8', 'ignore'),
-                         'email': data['email']}
 
-            user = UserData().load(user_data)
-        except ValidationError:
-            return abort(400, 'Bad request')
+        user = UserData().load({'username': data['username'],
+                         'password': bcrypt.generate_password_hash(data['password']).decode('utf-8', 'ignore'),
+                         'email': data['email']})
 
         session.add(user)
         session.commit()
@@ -80,7 +75,7 @@ def register_user():
             abort(403, 'You can only change your own account details')
 
         username = data['username']
-        password = data['password']
+        password = bcrypt.generate_password_hash(data['password']).decode('utf-8', 'ignore')
         email = data['email']
 
         if user is None:
@@ -91,7 +86,7 @@ def register_user():
             user.email = email
             session.add(user)
             session.commit()
-            result = UserData().dump(user)
+            #result = UserData().dump(user)
             return create_access_token(identity=username)
 
 
@@ -119,12 +114,12 @@ def make_events():
     if request.method == 'POST':
         if not get_jwt_identity():
             abort(401, 'You need to log in')
-        try:
-            author = session.query(User).filter(User.username == get_jwt_identity()).one_or_none()
+        #try:
+        author = session.query(User).filter(User.username == get_jwt_identity()).one_or_none()
 
-            event_data = Event(data['name'], data['date'], data['description'], author)
-        except ValidationError:
-            return abort(400, 'Bad request')
+        event_data = Event(data['name'], data['date'], data['description'], author)
+        #except ValidationError:
+            #return abort(400, 'Bad request')
 
         session.add(event_data, author)
         session.commit()
@@ -188,7 +183,7 @@ if __name__ == '__main__':
     app.run()
 
 server = make_server('', 5000, app)
-server.serve_forever()
+#server.serve_forever()
 
 
 #curl -XPOST http://127.0.0.1:5000/user -H "Content-Type:application/json" --data "{\"username\":\"John\", \"password\":\"8462927\", \"email\":\"johnd@email.com\"}"
