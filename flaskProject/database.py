@@ -4,17 +4,17 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import relationship
 
 
-SERVER = 'DESKTOP-59P7NBL'
-DATABASE = 'Pavlo_Python'
-DRIVER = 'SQL Server Native Client 11.0'
-USERNAME = 'Pavlo'
-PASSWORD = '123456'
+# SERVER = 'DESKTOP-59P7NBL'
+# DATABASE = 'Pavlo_Python'
+# DRIVER = 'SQL Server Native Client 11.0'
+# USERNAME = 'Pavlo'
+# PASSWORD = '123456'
+#
+#
+# DATABASE_CONNECTION = f'mssql://{USERNAME}:{PASSWORD}@{SERVER}/{DATABASE}?driver={DRIVER}'
 
 
-DATABASE_CONNECTION = f'mssql://{USERNAME}:{PASSWORD}@{SERVER}/{DATABASE}?driver={DRIVER}'
-
-
-engine = create_engine(DATABASE_CONNECTION)
+engine = create_engine('postgresql://postgres:976604745@localhost:5432/postgres')
 
 metadata = MetaData(engine)
 
