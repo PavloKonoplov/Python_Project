@@ -14,7 +14,7 @@ from sqlalchemy.orm import relationship
 # DATABASE_CONNECTION = f'mssql://{USERNAME}:{PASSWORD}@{SERVER}/{DATABASE}?driver={DRIVER}'
 
 
-engine = create_engine('postgresql://postgres:976604745@localhost:5432/postgres')
+engine = create_engine('mssql://Pavlo:123456@DESKTOP-59P7NBL/Pavlo_Python?driver=SQL Server Native Client 11.0')
 
 metadata = MetaData(engine)
 

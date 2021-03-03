@@ -28,7 +28,7 @@ def hello_world():
 
 @app.route('/login', methods=['POST'])
 def login():
-    #if not request.is_json:
+    # if not request.is_json:
     #    return jsonify({"msg": "Missing JSON in request"}), 400
 
     username = request.json.get('username', None)
@@ -56,10 +56,9 @@ def login():
 def register_user():
     data = request.json
     if request.method == 'POST':
-
         user = UserData().load({'username': data['username'],
-                         'password': bcrypt.generate_password_hash(data['password']).decode('utf-8', 'ignore'),
-                         'email': data['email']})
+                                'password': bcrypt.generate_password_hash(data['password']).decode('utf-8', 'ignore'),
+                                'email': data['email']})
 
         session.add(user)
         session.commit()
@@ -86,7 +85,7 @@ def register_user():
             user.email = email
             session.add(user)
             session.commit()
-            #result = UserData().dump(user)
+            # result = UserData().dump(user)
             return create_access_token(identity=username)
 
 
@@ -114,12 +113,12 @@ def make_events():
     if request.method == 'POST':
         if not get_jwt_identity():
             abort(401, 'You need to log in')
-        #try:
+        # try:
         author = session.query(User).filter(User.username == get_jwt_identity()).one_or_none()
 
         event_data = Event(data['name'], data['date'], data['description'], author)
-        #except ValidationError:
-            #return abort(400, 'Bad request')
+        # except ValidationError:
+        # return abort(400, 'Bad request')
 
         session.add(event_data, author)
         session.commit()
@@ -183,14 +182,14 @@ if __name__ == '__main__':
     app.run()
 
 server = make_server('', 5000, app)
-#server.serve_forever()
+# server.serve_forever()
 
 
-#curl -XPOST http://127.0.0.1:5000/user -H "Content-Type:application/json" --data "{\"username\":\"John\", \"password\":\"8462927\", \"email\":\"johnd@email.com\"}"
-#curl -XPUT http://127.0.0.1:5000/user -H "Content-Type:application/json" --data "{\"id\":\"1\", \"username\":\"John\", \"password\":\"202fjduy\", \"email\":\"johnd22@email.com\"}"
-#curl -XGET http://127.0.0.1:5000/user/John
+# curl -XPOST http://127.0.0.1:5000/user -H "Content-Type:application/json" --data "{\"username\":\"John\", \"password\":\"8462927\", \"email\":\"johnd@email.com\"}"
+# curl -XPUT http://127.0.0.1:5000/user -H "Content-Type:application/json" --data "{\"id\":\"1\", \"username\":\"John\", \"password\":\"202fjduy\", \"email\":\"johnd22@email.com\"}"
+# curl -XGET http://127.0.0.1:5000/user/John
 
-#curl -XPOST http://127.0.0.1:5000/events -H "Content-Type:application/json" --data "{\"name\":\"Movie night\", \"date\":\"2020-12-20\", \"description\":\"Popcorn\", \"author\":\"2\"}"
-#curl -XPUT http://127.0.0.1:5000/events -H "Content-Type:application/json" --data "{\"id\":\"2\", \"name\":\"Movie night\", \"date\":\"2020-12-21\", \"description\":\"Popcorn(remember)\"}"
-#curl -XGET http://127.0.0.1:5000/events
-#curl -XGET http://127.0.0.1:5000/events/connectedEvents/2
+# curl -XPOST http://127.0.0.1:5000/events -H "Content-Type:application/json" --data "{\"name\":\"Movie night\", \"date\":\"2020-12-20\", \"description\":\"Popcorn\", \"author\":\"2\"}"
+# curl -XPUT http://127.0.0.1:5000/events -H "Content-Type:application/json" --data "{\"id\":\"2\", \"name\":\"Movie night\", \"date\":\"2020-12-21\", \"description\":\"Popcorn(remember)\"}"
+# curl -XGET http://127.0.0.1:5000/events
+# curl -XGET http://127.0.0.1:5000/events/connectedEvents/2
